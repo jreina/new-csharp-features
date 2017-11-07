@@ -168,4 +168,27 @@ namespace new_csharp_features
             }
         }
     }
+
+    public class desconstruction
+    {
+        class Point
+        {
+            public int X { get; }
+            public int Y { get; }
+
+            public Point(int x, int y) { X = x; Y = y; }
+            public void Deconstruct(out int x, out int y) { x = X; y = Y; }
+        }
+
+        static Point GetPoint()
+        {
+            return new Point(2, 8);
+        }
+
+        static void new_deconstruction()
+        {
+            var (x, y) = GetPoint();
+            WriteLine($"x: {x}, y: {y}");
+        }
+    }
 }
