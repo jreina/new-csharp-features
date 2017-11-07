@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using static System.Console;
+using System.Collections.Concurrent;
 
 namespace new_csharp_features
 {
@@ -189,6 +190,65 @@ namespace new_csharp_features
         {
             var (x, y) = GetPoint();
             WriteLine($"x: {x}, y: {y}");
+        }
+    }
+
+    public class digitseparators
+    {
+        const double twoToTheThirtySecond = 4_294_967_296;
+        const double twoToTheSixteenth = 65_536;
+
+        public static void newway()
+        {
+            var two = Math.Log(twoToTheThirtySecond, twoToTheSixteenth);
+            WriteLine($"2^32 = {twoToTheThirtySecond}, 2^16 = {twoToTheSixteenth}, log{twoToTheSixteenth}({twoToTheThirtySecond}) = {two}");
+        }
+    }
+
+    public class binaryliterals
+    {
+        const int thirtytwo = 0b100000;
+        public static void newway()
+        {
+            WriteLine($"thirytwo: {thirtytwo}");
+        }
+    }
+    
+    public class expressionbodiedmembers
+    {
+        /// <summary>
+        /// https://blogs.msdn.microsoft.com/dotnet/2017/03/09/new-features-in-c-7-0/
+        /// </summary>
+        class Person
+        {
+            private static ConcurrentDictionary<int, string> names = new ConcurrentDictionary<int, string>();
+            private int id = 0;
+
+            public Person(string name) => names.TryAdd(id, name);
+            ~Person() => names.TryRemove(id, out _);
+            public string Name
+            {
+                get => names[id];
+                set => names[id] = value;
+            }
+        }
+    }
+
+    public class cleaner_throw_expressions
+    {
+        /// <summary>
+        /// https://blogs.msdn.microsoft.com/dotnet/2017/03/09/new-features-in-c-7-0/
+        /// </summary>
+        class Person
+        {
+            public string Name { get; }
+            public Person(string name) => Name = name ?? throw new ArgumentNullException(nameof(name));
+            public string GetFirstName()
+            {
+                var parts = Name.Split(" ");
+                return (parts.Length > 0) ? parts[0] : throw new InvalidOperationException("No name!");
+            }
+            public string GetLastName() => throw new NotImplementedException();
         }
     }
 }
