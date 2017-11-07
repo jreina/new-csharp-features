@@ -121,6 +121,25 @@ namespace new_csharp_features
             }
         }
 
+        static void SayCount(List<object> objects)
+        {
+            switch(objects)
+            {
+                case List<object> s when (s.Count == 0):
+                    WriteLine("list is empty");
+                    break;
+                case List<object> s when (s.Count == 1):
+                    WriteLine("list has one item");
+                    break;
+                case List<object> s when (s.Count == 2):
+                    WriteLine("list has two items");
+                    break;
+                case List<object> s when (s.Count > 2):
+                    WriteLine("list has more than two items");
+                    break;
+            }
+        }
+
         private class Circle
         {
             public int Radius;
